@@ -1,0 +1,3 @@
+22 Nov: Finished the GitHub Copilot course on Codedex!
+22 Nov: Learned tuples, dictionaries, and sets in Intermediate Python.
+Secret: I want to finish my pixel art game before the year ends.
