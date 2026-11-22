@@ -1,14 +1,30 @@
 # Codédex Projects
 
-Projects and exercises I built while learning on [Codédex](https://www.codedex.io) (Club, 2026).
+Games, apps and exercises I built while learning on [Codédex](https://www.codedex.io) in 2026, from JavaScript game dev to Lua, Python and Node.js.
 
-| Folder | What | Stack |
+## Games
+
+| Game | About | Stack | Play |
+| --- | --- | --- | --- |
+| **Frog Star Hop** | Platformer with 3 levels, patrolling wizards, moving platforms, lives, time bonus, best score and touch controls | JavaScript, Phaser 3 | [play in browser](https://gianneangely.github.io/codedex-projects/phaser-games/frog-star-hop/) |
+| **Spell Garden** | Survive waves of shadow wisps by casting a sparkle spell. The character runs on a state machine (idle, walk, run, cast, hurt) | JavaScript, Phaser 3 | [play in browser](https://gianneangely.github.io/codedex-projects/phaser-games/world-weaver/) |
+| **Treasure Meadow** | 2-player race to grab treasures in 60 seconds while the sky turns from day to night | JavaScript, Phaser 3 | [play in browser](https://gianneangely.github.io/codedex-projects/phaser-games/happy-place/) |
+| **Brick Breaker** | Breakout with 5 levels, power-ups, particles, best score saved to disk and 20 unit tests. My Lua final project | Lua, LÖVE | [how to run](lua/brick-breaker/) |
+
+## Other projects
+
+| Project | About | Stack |
 | --- | --- | --- |
-| [phaser-games](phaser-games/) | 3 browser games, including **Frog Star Hop** (platformer with enemies, win/lose, chiptune audio). [Play online](https://gianneangely.github.io/codedex-projects/phaser-games/frog-star-hop/) | JavaScript, Phaser 3 |
-| [lua](lua/) | **Brick Breaker**, a Breakout game with 3 levels and unit tests (Lua final project), plus a text RPG with OOP | Lua, LÖVE |
-| [machine-learning-tips-regression](machine-learning-tips-regression/) | Linear regression: does a bigger bill mean a bigger tip? (R² 0.545) | Python, pandas, scikit-learn, Matplotlib |
-| [github-copilot-python-apps](github-copilot-python-apps/) | Rock Paper Scissors and a calculator as desktop apps | Python, Tkinter |
-| [nodejs](nodejs/) | Node.js exercises: `fs`, `path`, `os` modules, HTTP servers, CRUD routes | JavaScript, Node.js |
-| [intermediate-python](intermediate-python/) | Intermediate Python exercises: file I/O, CSV, `unittest` | Python |
+| [Tip Predictor](machine-learning-tips-regression/) | Linear regression on 244 restaurant bills: each extra dollar adds about 10 cents of tip (R² 0.545) | Python, pandas, scikit-learn, Matplotlib |
+| [Tkinter Mini Apps](github-copilot-python-apps/) | Rock Paper Scissors with a scoreboard, and a calculator, as desktop apps | Python, Tkinter |
+| [Lua OOP Adventure](lua/adventure.lua) | Text battle with Player, Enemy and Spell objects built from metatables | Lua |
+| [Node.js exercises](nodejs/) | `fs`, `path` and `os` modules, small HTTP servers, CRUD routes | JavaScript, Node.js |
+| [Intermediate Python exercises](intermediate-python/) | File I/O, CSV, `unittest` | Python |
 
-Each project folder has its own README with how to run it.
+## Run locally
+
+- **Phaser games:** serve the folder and open a game, for example `cd phaser-games && python3 -m http.server` then visit http://localhost:8000/frog-star-hop/
+- **Brick Breaker:** install [LÖVE](https://love2d.org), then `love lua/brick-breaker`. Tests: `cd lua/brick-breaker && lua tests/run_tests.lua`
+- **Python projects:** `python3 <file>.py` inside the project folder (the ML project needs `pip install pandas numpy scikit-learn matplotlib`)
+
+Art for the Phaser games comes from the Codédex Phaser course.
