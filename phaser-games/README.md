@@ -1,25 +1,21 @@
 # Phaser Games
 
-Three small browser games I built while learning [Phaser 3](https://phaser.io) on Codédex.
+Three browser games built with [Phaser 3](https://phaser.io). Each one started as a Codédex Phaser exercise and grew into a small complete game with a title screen, scoring, a best score saved in the browser, sound and touch controls for phones.
 
-| Game | What it shows |
-| --- | --- |
-| [Frog Star Hop](frog-star-hop/) | Platformer: collect 5 stars, dodge 2 patrolling wizards. Arcade physics, colliders vs overlaps, HUD, win/lose states, restart, generated chiptune audio |
-| [World Weaver](world-weaver/) | Character with a state machine (idle, walk, run, cast spell) and spritesheet animations |
-| [Happy Place](happy-place/) | First scene: preload/create/update, sprites, keyboard input |
+| Game | Folder | Controls | Play |
+| --- | --- | --- | --- |
+| Frog Star Hop | `frog-star-hop/` | arrows or WASD, up/W/space to jump, P to pause | [play](https://gianneangely.github.io/codedex-projects/phaser-games/frog-star-hop/) |
+| Spell Garden | `world-weaver/` | arrows or WASD, shift to run, space to cast | [play](https://gianneangely.github.io/codedex-projects/phaser-games/world-weaver/) |
+| Treasure Meadow | `happy-place/` | player 1 arrows, player 2 WASD | [play](https://gianneangely.github.io/codedex-projects/phaser-games/happy-place/) |
 
-**Play online:** [Frog Star Hop](https://gianneangely.github.io/codedex-projects/phaser-games/frog-star-hop/) · [World Weaver](https://gianneangely.github.io/codedex-projects/phaser-games/world-weaver/) · [Happy Place](https://gianneangely.github.io/codedex-projects/phaser-games/happy-place/)
-
-**Stack:** JavaScript, Phaser 3.90 (CDN). No build step.
+**What's inside:** scenes (boot, title, game), arcade physics with static and moving platforms, overlap vs collider, a character state machine, particles, tweens for squash and stretch, camera shake, a chiptune WAV generated in code, `localStorage` best scores, and `Scale.FIT` with on-screen buttons for touch screens.
 
 ## Run
 
-Open a game folder's `index.html` through any local server, for example:
-
 ```bash
-cd frog-star-hop && python3 -m http.server 8000
+python3 -m http.server 8000
 ```
 
-Then visit http://localhost:8000. Frog Star Hop controls: arrow keys to move and jump, R to restart.
+Then open http://localhost:8000/frog-star-hop/ (or the other folders). No build step: Phaser 3.90 loads from a CDN.
 
 Art assets are the ones provided by the Codédex Phaser course (loaded by URL).
