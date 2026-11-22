@@ -8,6 +8,8 @@ Three small browser games I built while learning [Phaser 3](https://phaser.io) o
 | [World Weaver](world-weaver/) | Character with a state machine (idle, walk, run, cast spell) and spritesheet animations |
 | [Happy Place](happy-place/) | First scene: preload/create/update, sprites, keyboard input |
 
+**Play online:** [Frog Star Hop](https://gianneangely.github.io/phaser-games/frog-star-hop/) · [World Weaver](https://gianneangely.github.io/phaser-games/world-weaver/) · [Happy Place](https://gianneangely.github.io/phaser-games/happy-place/)
+
 **Stack:** JavaScript, Phaser 3.90 (CDN). No build step.
 
 ## Run
