@@ -15,6 +15,7 @@ Games, apps and exercises I built while learning on [Codédex](https://www.coded
 
 | Project | About | Stack |
 | --- | --- | --- |
+| [UI/UX Design](ui-ux-design/) | Figma: holographic trading card deck and PetPal, a petsitter app taken from Crazy 8s to wireframes, clickable prototype and hi-fi | Figma |
 | [Tip Predictor](machine-learning-tips-regression/) | Linear regression on 244 restaurant bills: each extra dollar adds about 10 cents of tip (R² 0.545) | Python, pandas, scikit-learn, Matplotlib |
 | [Tkinter Mini Apps](github-copilot-python-apps/) | Rock Paper Scissors with a scoreboard, and a calculator, as desktop apps | Python, Tkinter |
 | [Lua OOP Adventure](lua/adventure.lua) | Text battle with Player, Enemy and Spell objects built from metatables | Lua |
