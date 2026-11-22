@@ -18,6 +18,10 @@ function Brick:hit()
   return self.hp <= 0
 end
 
+function Brick:color()
+  return COLORS[self.hp]
+end
+
 function Brick:draw()
   love.graphics.setColor(COLORS[self.hp])
   love.graphics.rectangle("fill", self.x, self.y, self.w, self.h, 4, 4)

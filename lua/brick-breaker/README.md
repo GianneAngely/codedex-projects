@@ -1,33 +1,35 @@
-# Brick Breaker (Final Project Lua, Codédex)
+# Brick Breaker
 
-Game Breakout 2D pakai LÖVE dan Lua. Pantulkan bola pakai paddle sampai semua bata hancur. Ada 3 level, makin lama bola makin cepat.
+Breakout in Lua with [LÖVE](https://love2d.org). My final project for the Codédex Lua course.
 
-## Cara main
+- 5 levels, the ball gets faster each level
+- Bricks with 1 to 3 hit points that change color as they crack
+- Power-ups: **W** wider paddle (10 s), **S** slower ball (8 s), **+** extra life
+- Particles, screen shake, ball trail and beep sounds generated in code
+- Best score saved to disk, title screen, pause
+- 20 unit tests that run with plain `lua`, no LÖVE needed
 
-| Tombol | Fungsi |
+## Controls
+
+| Key | Action |
 | --- | --- |
-| Panah kiri/kanan atau A/D | Gerakin paddle |
-| SPACE | Lempar bola / lanjut level |
+| Left/Right, A/D or mouse | Move the paddle |
+| Space or click | Launch the ball, next level |
 | P | Pause |
-| R | Main lagi (setelah game over / menang) |
-| ESC | Keluar |
+| R | Play again after game over or win |
+| Esc | Quit |
 
-- Bata pink = 1 pukulan (10 poin), kuning = 2 pukulan (20), biru = 3 pukulan (30). Warna berubah tiap kena.
-- Nyawa 3. Bola jatuh = nyawa berkurang.
-- Kena pinggir paddle = bola mantul lebih miring.
+## Run
 
-## Cara jalanin
+1. Install LÖVE 11 from https://love2d.org
+2. `love path/to/brick-breaker` (on macOS: `/Applications/love.app/Contents/MacOS/love brick-breaker`)
 
-1. Download LÖVE dari https://love2d.org (versi macOS), buka app-nya sekali, izinkan di System Settings > Privacy & Security.
-2. Drag folder `brick-breaker` ke ikon LÖVE, atau di Terminal:
-   `/Applications/love.app/Contents/MacOS/love ~/Documents/Projects/codedex/lua/brick-breaker`
+Tests: `lua tests/run_tests.lua`
 
-Tes logika (tanpa LÖVE): `lua tests/run_tests.lua`
+## Code
 
-## Struktur
-
-- `main.lua`: callback LÖVE (`love.load`, `love.update`, `love.draw`, `love.keypressed`) + bunyi beep
-- `game.lua`: state machine (serve, play, paused, levelclear, gameover, win), skor, nyawa, level
-- `ball.lua`, `paddle.lua`, `brick.lua`: objek pakai metatable `__index` dan constructor `new`
-- `level.lua`: layout level dari tabel string (angka = hp bata, `.` = kosong)
-- `tests/`: unit test logika + smoke test dengan `love` palsu
+- `main.lua`: LÖVE callbacks (`love.load`, `love.update`, `love.draw`, input), sounds, best-score file
+- `game.lua`: game state machine (title, serve, play, paused, levelclear, gameover, win), power-ups, particles
+- `ball.lua`, `paddle.lua`, `brick.lua`: objects built with metatables and a `new` constructor
+- `level.lua`: levels written as rows of text (digit = brick hit points, `.` = empty)
+- `tests/`: unit tests plus a smoke test with a fake `love` table

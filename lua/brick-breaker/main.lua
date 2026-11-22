@@ -23,8 +23,14 @@ function love.load()
   sounds.brick = beep(660, 0.05)
   sounds.lose = beep(160, 0.35)
   sounds.win = beep(880, 0.4)
+  sounds.power = beep(990, 0.12)
 
-  game = Game.new(love.graphics.getWidth(), love.graphics.getHeight())
+  -- skor tertinggi disimpan di file kecil di folder save LÖVE
+  local store = {
+    load = function() return tonumber(love.filesystem.read("best.txt") or "") or 0 end,
+    save = function(score) love.filesystem.write("best.txt", tostring(score)) end,
+  }
+  game = Game.new(love.graphics.getWidth(), love.graphics.getHeight(), store)
   game.sfx = function(name)
     sounds[name]:stop()
     sounds[name]:play()
@@ -41,6 +47,14 @@ end
 function love.keypressed(key)
   if key == "escape" then love.event.quit() end
   game:keypressed(key)
+end
+
+function love.mousemoved(x)
+  game:setPaddleCenter(x)
+end
+
+function love.mousepressed()
+  game:keypressed("space")
 end
 
 function love.draw()

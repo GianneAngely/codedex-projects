@@ -14,9 +14,14 @@ love = {
   audio = { newSource = function() return fakeSource end },
   keyboard = { isDown = function(...) for _, k in ipairs({...}) do if down[k] then return true end end return false end },
   event = { quit = noop },
+  timer = { getTime = function() return 1 end },
+  filesystem = { read = function() return nil end, write = noop },
 }
 dofile("main.lua")
 love.load()
+love.draw()
+love.keypressed("space")
+love.mousemoved(300)
 down.right = true
 for _ = 1, 30 do love.update(1 / 60); love.draw() end
 love.keypressed("space")

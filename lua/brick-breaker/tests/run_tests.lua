@@ -15,6 +15,14 @@ local function test(name, fn)
 end
 local function near(a, b) return math.abs(a - b) < 1e-6 end
 
+-- game baru yang sudah lewat layar judul, power-up dimatikan biar hasilnya pasti
+local function newGame(store)
+  local g = Game.new(800, 600, store)
+  g.random = function() return 0.99 end
+  g:keypressed("space")
+  return g
+end
+
 test("level 1 punya 30 bata", function()
   assert(#Level.build(1, 800) == 30)
 end)
@@ -58,7 +66,7 @@ test("kena kanan paddle, bola ke kanan, speed tetap", function()
 end)
 
 test("serve: SPACE melempar bola", function()
-  local g = Game.new(800, 600)
+  local g = newGame()
   g:update(0.016, 0)
   assert(g.state == "serve" and g.ball.x == g.paddle:center())
   g:keypressed("space")
@@ -66,14 +74,14 @@ test("serve: SPACE melempar bola", function()
 end)
 
 test("bola jatuh: nyawa berkurang, balik serve", function()
-  local g = Game.new(800, 600); g:keypressed("space")
+  local g = newGame(); g:keypressed("space")
   g.ball.x, g.ball.y, g.ball.dx, g.ball.dy = 400, 700, 0, 100
   g:update(0.016, 0)
   assert(g.lives == 2 and g.state == "serve")
 end)
 
 test("nyawa habis: game over, R reset", function()
-  local g = Game.new(800, 600); g.lives = 1; g:keypressed("space")
+  local g = newGame(); g.lives = 1; g:keypressed("space")
   g.ball.x, g.ball.y, g.ball.dx, g.ball.dy = 400, 700, 0, 100
   g:update(0.016, 0)
   assert(g.state == "gameover")
@@ -82,7 +90,7 @@ test("nyawa habis: game over, R reset", function()
 end)
 
 test("bola kena bata: bata hilang, skor nambah, bola balik arah", function()
-  local g = Game.new(800, 600); g:keypressed("space")
+  local g = newGame(); g:keypressed("space")
   local target = g.bricks[1]
   local count = #g.bricks
   g.ball.x = target.x + target.w / 2
@@ -93,25 +101,87 @@ test("bola kena bata: bata hilang, skor nambah, bola balik arah", function()
 end)
 
 test("bata habis: level clear, SPACE ke level 2, level terakhir menang", function()
-  local g = Game.new(800, 600); g:keypressed("space")
+  local g = newGame(); g:keypressed("space")
   g.bricks = {}
   g:update(0.016, 0)
   assert(g.state == "levelclear")
   g:keypressed("space")
   assert(g.level == 2 and g.state == "serve" and #g.bricks == 40)
-  assert(g.ball.speed == 360)
+  assert(g.ball.speed == 340)
   g.level = Level.count; g:keypressed("space"); g.state = "play"; g.bricks = {}
   g:update(0.016, 0)
   assert(g.state == "win")
 end)
 
 test("P pause dan lanjut, paddle diam waktu pause", function()
-  local g = Game.new(800, 600); g:keypressed("space"); g:keypressed("p")
+  local g = newGame(); g:keypressed("space"); g:keypressed("p")
   local x = g.paddle.x
   g:update(0.5, 1)
   assert(g.state == "paused" and g.paddle.x == x)
   g:keypressed("p")
   assert(g.state == "play")
+end)
+
+test("mulai di layar judul, SPACE masuk serve", function()
+  local g = Game.new(800, 600)
+  assert(g.state == "title")
+  g:keypressed("space")
+  assert(g.state == "serve")
+end)
+
+test("bata pecah: muncul partikel, partikel hilang sendiri", function()
+  local g = newGame(); g:keypressed("space")
+  local b = g.bricks[1]
+  g.ball.x, g.ball.y, g.ball.dx, g.ball.dy = b.x + b.w / 2, b.y + b.h + g.ball.r - 1, 0, -300
+  g:update(0.001, 0)
+  assert(#g.particles > 0)
+  for _ = 1, 60 do g:updateParticles(0.016) end
+  assert(#g.particles == 0)
+end)
+
+test("power-up jatuh dari bata dan ketangkep paddle: paddle lebar 10 detik", function()
+  local g = newGame(); g:keypressed("space")
+  g.random = function() return 0.0 end -- selalu drop, jenis pertama = wide
+  local b = g.bricks[1]
+  g.ball.x, g.ball.y, g.ball.dx, g.ball.dy = b.x + b.w / 2, b.y + b.h + g.ball.r - 1, 0, -300
+  g:update(0.001, 0)
+  assert(#g.powerups == 1 and g.powerups[1].kind == "wide")
+  g.powerups[1].x, g.powerups[1].y = g.paddle:center(), g.paddle.y
+  g.ball.x, g.ball.y, g.ball.dx, g.ball.dy = 400, 300, 0, -10
+  g:update(0.001, 0)
+  assert(g.paddle.w == 170 and #g.powerups == 0)
+  for _ = 1, 11 do g:updateEffects(1) end
+  assert(g.paddle.w == 110)
+end)
+
+test("power-up slow: bola pelan lalu balik normal, arah tetap", function()
+  local g = newGame(); g:keypressed("space")
+  g:applyPowerup("slow")
+  assert(near(math.sqrt(g.ball.dx ^ 2 + g.ball.dy ^ 2), 210) and g.ball.dy < 0)
+  for _ = 1, 9 do g:updateEffects(1) end
+  assert(near(math.sqrt(g.ball.dx ^ 2 + g.ball.dy ^ 2), 300))
+end)
+
+test("power-up nyawa maksimal 5", function()
+  local g = newGame()
+  for _ = 1, 4 do g:applyPowerup("life") end
+  assert(g.lives == 5)
+end)
+
+test("skor tertinggi disimpan waktu game over", function()
+  local saved
+  local g = newGame({ load = function() return 50 end, save = function(s) saved = s end })
+  assert(g.best == 50)
+  g.score = 120; g.lives = 1; g:keypressed("space")
+  g.ball.x, g.ball.y, g.ball.dx, g.ball.dy = 400, 700, 0, 100
+  g:update(0.016, 0)
+  assert(g.state == "gameover" and saved == 120 and g.best == 120 and g.newBest)
+end)
+
+test("mouse gerakin paddle, nggak keluar layar", function()
+  local g = newGame()
+  g:setPaddleCenter(400); assert(g.paddle:center() == 400)
+  g:setPaddleCenter(5); assert(g.paddle.x == 0)
 end)
 
 print(("\n%d lulus, %d gagal"):format(passed, failed))
