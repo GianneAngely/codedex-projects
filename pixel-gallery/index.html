@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Codédex Pixel Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A1930;
+    --bg2: #10254D;
+    --panel: rgba(4, 10, 24, 0.55);
+    --line: rgba(255, 214, 10, 0.35);
+    --accent: #FFD60A;
+    --text: #EDF3FF;
+    --muted: #9DB2D9;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--bg), var(--bg2) 55%, var(--bg));
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+    font-weight: 500;
+  }
+  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .stars i {
+    position: absolute; width: 3px; height: 3px; background: #fff; opacity: .5;
+    animation: twinkle 3s infinite ease-in-out;
+  }
+  @keyframes twinkle { 50% { opacity: .1; } }
+  main { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding: 40px 16px 64px; }
+  header { text-align: center; }
+  header .hero { width: min(360px, 80vw); image-rendering: pixelated; animation: bob 2.4s infinite ease-in-out; }
+  @keyframes bob { 50% { transform: translateY(-8px); } }
+  h1 {
+    font-family: "Pixelify Sans", monospace; font-weight: 700; letter-spacing: 1px;
+    font-size: clamp(34px, 7vw, 56px); margin: 12px 0 6px; color: var(--accent);
+    text-shadow: 0 4px 0 #9a6b00;
+  }
+  header p { color: var(--muted); margin: 0 auto; max-width: 560px; line-height: 1.6; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 28px 0 8px; }
+  .chip {
+    font: 700 14px "Pixelify Sans", monospace; letter-spacing: .5px;
+    color: var(--text); background: var(--panel); border: 1.5px solid var(--line);
+    padding: 8px 14px; border-radius: 999px; cursor: pointer;
+    transition: transform .15s, background .15s;
+  }
+  .chip:hover { transform: translateY(-2px); }
+  .chip[aria-pressed="true"] { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  section { margin-top: 36px; }
+  h2 {
+    font: 700 20px "Pixelify Sans", monospace; letter-spacing: .5px; margin: 0 0 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  h2::before { content: ""; width: 5px; height: 20px; border-radius: 3px; background: var(--accent); }
+  h2 small { font: 500 13px "Plus Jakarta Sans", sans-serif; color: var(--muted); }
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .grid.wide { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .card {
+    background: var(--panel); border: 1.5px solid var(--line); border-radius: 16px;
+    padding: 12px; cursor: zoom-in; text-align: center;
+    transition: transform .18s, border-color .18s;
+  }
+  .card:hover { transform: translateY(-4px) rotate(-1deg); border-color: var(--accent); }
+  .card .frame {
+    height: 120px; display: grid; place-items: center; border-radius: 10px;
+    background-color: #0d1f3f;
+    background-image: linear-gradient(45deg, #112850 25%, transparent 25%, transparent 75%, #112850 75%),
+                      linear-gradient(45deg, #112850 25%, transparent 25%, transparent 75%, #112850 75%);
+    background-size: 16px 16px; background-position: 0 0, 8px 8px;
+    overflow: hidden;
+  }
+  .wide .card .frame { height: 150px; }
+  .card img { max-width: 100%; max-height: 100%; image-rendering: pixelated; }
+  .card span { display: block; margin-top: 8px; font-size: 13px; color: var(--muted); word-break: break-word; }
+  .card .tag { display: inline-block; margin-top: 6px; font: 700 10px "Plus Jakarta Sans"; color: var(--bg); background: var(--accent); border-radius: 999px; padding: 2px 8px; }
+  dialog {
+    border: 2px solid var(--accent); border-radius: 20px; padding: 20px; max-width: min(92vw, 900px);
+    background: var(--bg); color: var(--text); text-align: center;
+  }
+  dialog::backdrop { background: rgba(4, 10, 24, .8); }
+  dialog img { max-width: 100%; max-height: 70vh; min-width: min(320px, 80vw); image-rendering: pixelated; object-fit: contain; }
+  dialog p { font: 700 18px "Pixelify Sans", monospace; margin: 12px 0 4px; }
+  dialog button { font: 700 14px "Pixelify Sans"; background: var(--accent); color: var(--bg); border: 0; border-radius: 10px; padding: 8px 18px; cursor: pointer; margin-top: 10px; }
+  footer { margin-top: 56px; text-align: center; color: var(--muted); font-size: 13px; line-height: 1.7; }
+  footer a { color: var(--accent); }
+  .hidden { display: none; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<main>
+  <header>
+    <img class="hero" src="https://www.codedex.io/images/30-nites-of-code/all-pets.gif" alt="All the Codédex pets standing together">
+    <h1>Codédex Pixel Gallery</h1>
+    <p>A little collection of the pixel art I fell in love with while learning on Codédex: pets, characters, badges, items and game sprites. Tap any picture to see it big.</p>
+  </header>
+
+  <nav class="chips" id="chips" aria-label="Filter"></nav>
+  <div id="sections"></div>
+
+  <footer>
+    All pixel art © <a href="https://www.codedex.io">Codédex</a> (Niteowl, Inc.), shown here as a fan gallery and loaded straight from their site.<br>
+    Made by Kyokoala · <a href="../">back to my Codédex projects</a>
+  </footer>
+</main>
+
+<dialog id="viewer">
+  <img id="viewerImg" alt="">
+  <p id="viewerName"></p>
+  <button id="viewerClose" type="button">Close</button>
+</dialog>
+
+<script>
+const CX = "https://www.codedex.io/images/";
+const IM = "https://i.imgur.com/";
+const G = [
+  { id: "animated", title: "Animated", note: "gifs and moving sprites", items: [
+    [CX + "30-nites-of-code/all-pets.gif", "The whole pet gang"],
+    [CX + "30-nites-of-code/step-1.gif", "Mystery egg"],
+    [CX + "30-nites-of-code/step-2.gif", "Baby Duck and an apple"],
+    [CX + "30-nites-of-code/step-3.gif", "Baby Dragon"],
+    [CX + "30-nites-of-code/footer.gif", "Big spotted egg"],
+    [CX + "character_gifs/letter.gif", "Mail day with the bot"],
+    [CX + "character_gifs/dZ7Qu9K.gif", "Party on the rug"],
+    [CX + "character_gifs/BWViimf.gif", "Tiny walkers"],
+    [CX + "boy.gif", "Builder"],
+    [CX + "community/bouncer.gif", "Bouncing computer"],
+    [CX + "community/ticket.gif", "Golden ticket"],
+    [CX + "brand/bot/bouncingbot.webp", "Bouncing bot"],
+    [CX + "brand/bot/sleepybot.webp", "Sleepy bot"],
+    [CX + "lumi/lumi-idle.webp", "Lumi idle"],
+    [CX + "lumi/lumi-levitate.webp", "Lumi levitating"],
+    [CX + "lumi/lumi-spin-jump.webp", "Lumi spin jump"],
+    [CX + "courses/projectPreviews/python/final-1.gif", "Python final project preview"],
+    [CX + "courses/projectPreviews/javascript/Nov-11-2024%2009-23-09.gif", "JavaScript project preview"],
+    [CX + "courses/projectPreviews/html/Nov-11-2024%2009-04-40.gif", "HTML project preview"],
+  ]},
+  { id: "pets", title: "Pets and game sprites", note: "from the Phaser course", items: [
+    [IM + "wMj8P7M.gif", "Hippocorn"],
+    [IM + "TTQA8lp.gif", "Dino"],
+    [IM + "NSsqbju.png", "Frog"],
+    [IM + "sdFz5Xp.png", "Wizard"],
+    [IM + "7CU9Ky9.png", "Fox Girl sprite sheet"],
+    [IM + "z5E7KFm.gif", "Spinning star"],
+    [IM + "4ZZz70O.gif", "Gold coin"],
+    [IM + "8SJRGJr.gif", "Green gem"],
+    [IM + "I40gewR.png", "Star pickup"],
+    [IM + "uEJoszN.png", "Green platform"],
+    [IM + "uhAy5nF.png", "Yellow platform"],
+    [IM + "oSHt5fT.png", "Blue platform"],
+    [IM + "TUKptDb.png", "Pink platform"],
+    [CX + "unlockableItems/ai-bot-sprite.png", "AI bot"],
+    [CX + "unlockableItems/RubberDuck.png", "Rubber duck"],
+    [CX + "unlockableItems/editor-theme-brush.png", "Theme brush"],
+    [CX + "30-nites-of-code/egg.png", "Egg"],
+    [CX + "30-nites-of-code/trophy.png", "Trophy"],
+    [CX + "30-nites-of-code/calendar.png", "Calendar"],
+    [CX + "coin-cropped.png", "Codédex coin"],
+    [CX + "community/news.png", "Megaphone"],
+    [CX + "challenge_packs/questionmark.png", "Question block"],
+  ]},
+  { id: "golden", title: "Golden course badges", note: "the shiny ones", items: [
+    ["int-python", "Intermediate Python"], ["int-js", "Intermediate JavaScript"], ["int-java", "Intermediate Java"], ["node", "Node.js"],
+    ["sql", "SQL"], ["phaser", "Phaser"], ["lua", "Lua"], ["github-copilot", "GitHub Copilot"],
+  ].map(([f, n]) => [CX + "badges/goldenCourseBadges/" + f + ".png", n]) },
+  { id: "badges", title: "Chapter badges", note: "one for each chapter", items: [
+    ...["variables", "control-flow", "loops", "functions", "lists", "classes-and-objects", "modules", "hello-world"].map(n => ["python/" + n, "Python · " + n]),
+    ...["the-console", "variables", "conditionals", "loops", "arrays", "functions", "objects", "trifecta"].map(n => ["javascript/" + n, "JavaScript · " + n]),
+    ...["elements", "structure", "forms", "semantic-html"].map(n => ["html/" + n, "HTML · " + n]),
+    ...["first-react-app", "jsx-&-components", "props-&-state", "events", "forms", "hooks", "data-fetching", "routing"].map(n => ["framework-valley-react/" + encodeURIComponent(n), "React · " + n]),
+    ...["your-first-quest", "sprites-sprites-sprites", "triple-jump", "new-worldbuilder"].map(n => ["phaser/" + n, "Phaser · " + n]),
+    ...["ola-lua", "control-flow-and-loops", "tables-and-functions", "objects"].map(n => ["lua/" + n, "Lua · " + n]),
+    ...["queries", "aggregates", "new-table", "multiple-tables"].map(n => ["sql/" + n, "SQL · " + n]),
+    ...["the-world-of-design", "design-as-problem-solving"].map(n => ["ui-ux-design/" + n, "UI/UX · " + n]),
+    ["p5js/canvas-elements", "p5.js · canvas-elements"],
+    ["java/loops", "Java · loops"], ["java/arrays", "Java · arrays"], ["c-sharp/control-flow", "C# · control-flow"],
+    ...["newbie", "hello-world", "main-character", "two-cents"].map(n => ["community/" + n, "Community · " + n]),
+  ].map(([p, n]) => [CX + "badges/" + p + ".png", n.replace(/-/g, " ").replace(/%26/g, "&")]) },
+  { id: "ranks", title: "Rank badges", note: "levels 1 to 5", items: [1, 2, 3, 4, 5].map(n => [CX + "rank_badges/level_" + n + ".png", "Level " + n]) },
+  { id: "banners", title: "Course worlds", note: "big banners and parallax scenes (large files)", wide: true, items: [
+    ["react/react-banner.webp", "React"], ["phaser/phaser-banner.webp", "Phaser"], ["lua/lua-banner.webp", "Lua"],
+    ["p5/p5-banner.webp", "p5.js"], ["ui-ux-design/ui-ux-design-banner.webp", "UI/UX Design"],
+    ["nodejs/nodejs-banner.webp", "Node.js"], ["machine-learning/machine-learning-banner.webp", "Machine Learning"],
+    ["intermediate-python/intermediate-python-banner.webp", "Intermediate Python"], ["intermediate-java/intermediate-java-banner.webp", "Intermediate Java"],
+    ["data-structures-and-algorithms/data-structures-and-algorithms-banner.webp", "Data Structures & Algorithms"],
+    ["github-copilot/github-copilot-banner.webp", "GitHub Copilot"], ["command-line/command-line-banner.webp", "Command Line"],
+    ["css/banner-v2.png", "CSS"],
+    ["python/python-parallax-background.webp", "Python world (back)"], ["python/python-parallax-foreground.webp", "Python world (front)"],
+    ["javascript/javascript-parallax-background.webp", "JavaScript world (back)"], ["javascript/javascript-parallax-foreground.webp", "JavaScript world (front)"],
+    ["html/html-parallax-background.webp", "HTML world (back)"], ["html/html-parallax-foreground.webp", "HTML world (front)"],
+  ].map(([p, n]) => [CX + p, n]) },
+];
+
+// stars
+const stars = document.getElementById("stars");
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement("i");
+  s.style.left = Math.random() * 100 + "%";
+  s.style.top = Math.random() * 100 + "%";
+  s.style.animationDelay = (Math.random() * 3).toFixed(2) + "s";
+  stars.appendChild(s);
+}
+
+// sections
+const wrap = document.getElementById("sections");
+const chips = document.getElementById("chips");
+const makeChip = (id, label) => {
+  const b = document.createElement("button");
+  b.className = "chip"; b.type = "button"; b.textContent = label; b.dataset.id = id;
+  b.setAttribute("aria-pressed", id === "all" ? "true" : "false");
+  b.onclick = () => {
+    chips.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(c === b)));
+    wrap.querySelectorAll("section").forEach(s => s.classList.toggle("hidden", id !== "all" && s.dataset.id !== id));
+  };
+  chips.appendChild(b);
+};
+makeChip("all", "All");
+const viewer = document.getElementById("viewer");
+G.forEach(g => {
+  makeChip(g.id, g.title);
+  const sec = document.createElement("section");
+  sec.dataset.id = g.id;
+  sec.innerHTML = `<h2>${g.title} <small>${g.items.length} · ${g.note}</small></h2>`;
+  const grid = document.createElement("div");
+  grid.className = "grid" + (g.wide ? " wide" : "");
+  g.items.forEach(([src, name]) => {
+    const card = document.createElement("button");
+    card.className = "card"; card.type = "button";
+    const animated = /\.(gif|webp)$/i.test(src) && g.id !== "banners";
+    card.innerHTML = `<div class="frame"><img loading="lazy" src="${src}" alt="${name}"></div><span>${name}</span>` + (animated ? `<em class="tag">ANIMATED</em>` : "");
+    const img = card.querySelector("img");
+    img.onerror = () => card.remove();
+    // tiny sprites get scaled up by a whole number so pixels stay crisp
+    img.onload = () => {
+      const box = card.querySelector(".frame");
+      const s = Math.floor(Math.min((box.clientWidth - 16) / img.naturalWidth, (box.clientHeight - 16) / img.naturalHeight, 4));
+      if (s >= 2) img.style.width = img.naturalWidth * s + "px";
+    };
+    card.onclick = () => {
+      document.getElementById("viewerImg").src = src;
+      document.getElementById("viewerImg").alt = name;
+      document.getElementById("viewerName").textContent = name;
+      viewer.showModal();
+    };
+    grid.appendChild(card);
+  });
+  sec.appendChild(grid);
+  wrap.appendChild(sec);
+});
+document.getElementById("viewerClose").onclick = () => viewer.close();
+viewer.addEventListener("click", e => { if (e.target === viewer) viewer.close(); });
+</script>
+</body>
+</html>
