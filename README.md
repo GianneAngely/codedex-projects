@@ -39,7 +39,7 @@
 
 ## Extras <img src="https://www.codedex.io/images/30-nites-of-code/step-2.gif" height="28" alt="">
 
-- **[Pixel Gallery](https://gianneangely.github.io/codedex-projects/pixel-gallery/)**: a fan page of the Codédex pixel art I love, with 120+ pets, characters, badges and course worlds. Tap any sprite to zoom.
+- **[Pixel Gallery](https://gianneangely.github.io/codedex-projects/pixel-gallery/)**: a fan page of the Codédex pixel art I love, with 220+ pets, characters, lesson animations, backgrounds, badges and course worlds. Tap any sprite to zoom.
 - **[Study notes](notes/)** (Bahasa Indonesia): chapter-by-chapter notes for React, p5.js, UI/UX Design and SQL.
 
 ## Run locally
